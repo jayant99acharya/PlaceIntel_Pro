@@ -224,8 +224,8 @@ func (ph *PlaceHandler) GetPlaceIntelligenceByID(c *gin.Context) {
 
 	// Convert details to FoursquarePlace format for intelligence processing
 	place := models.FoursquarePlace{
-		FSQId: details.FSQId,
-		Name:  details.Name,
+		FSQPlaceId: details.FSQId,
+		Name:       details.Name,
 		Location: struct {
 			Address     string  `json:"address"`
 			Country     string  `json:"country"`
@@ -233,8 +233,8 @@ func (ph *PlaceHandler) GetPlaceIntelligenceByID(c *gin.Context) {
 			Locality    string  `json:"locality"`
 			Postcode    string  `json:"postcode"`
 			Region      string  `json:"region"`
-			Latitude    float64 `json:"lat"`
-			Longitude   float64 `json:"lng"`
+			Latitude    float64 `json:"latitude"`
+			Longitude   float64 `json:"longitude"`
 		}{
 			Address:     details.Location.Address,
 			Country:     details.Location.Country,

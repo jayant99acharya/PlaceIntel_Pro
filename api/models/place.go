@@ -14,17 +14,17 @@ type PlaceSearchRequest struct {
 
 // FoursquarePlace represents basic place data from Foursquare API
 type FoursquarePlace struct {
-	FSQId    string `json:"fsq_id"`
-	Name     string `json:"name"`
-	Location struct {
+	FSQPlaceId string `json:"fsq_place_id"`
+	Name       string `json:"name"`
+	Location   struct {
 		Address     string  `json:"address"`
 		Country     string  `json:"country"`
 		CrossStreet string  `json:"cross_street"`
 		Locality    string  `json:"locality"`
 		Postcode    string  `json:"postcode"`
 		Region      string  `json:"region"`
-		Latitude    float64 `json:"lat"`
-		Longitude   float64 `json:"lng"`
+		Latitude    float64 `json:"latitude"`
+		Longitude   float64 `json:"longitude"`
 	} `json:"location"`
 	Categories []struct {
 		Id   int    `json:"id"`
@@ -50,7 +50,7 @@ type BusinessIntelligence struct {
 
 // RealTimeContext represents live contextual information
 type RealTimeContext struct {
-	CurrentStatus        string    `json:"current_status"`
+	CurrentStatus       string    `json:"current_status"`
 	CrowdLevel          string    `json:"crowd_level"`
 	BestVisitTimes      []string  `json:"best_visit_times"`
 	LiveEvents          []string  `json:"live_events"`
@@ -82,11 +82,11 @@ type AccessibilityIntelligence struct {
 
 // UnifiedRecommendations represents AI-generated unified insights
 type UnifiedRecommendations struct {
-	ConfidenceScore       float64  `json:"confidence_score"`
-	PersonalizedInsights  []string `json:"personalized_insights"`
-	AlternativeSuggestions []string `json:"alternative_suggestions"`
-	OptimalVisitStrategy   string   `json:"optimal_visit_strategy"`
-	AccessibilityNotes     []string `json:"accessibility_notes"`
+	ConfidenceScore         float64    `json:"confidence_score"`
+	PersonalizedInsights    []string   `json:"personalized_insights"`
+	AlternativeSuggestions  []string   `json:"alternative_suggestions"`
+	OptimalVisitStrategy    string     `json:"optimal_visit_strategy"`
+	AccessibilityNotes      []string   `json:"accessibility_notes"`
 }
 
 // PlaceIntelligence represents the complete enhanced place data
@@ -99,10 +99,10 @@ type PlaceIntelligence struct {
 	Distance     int             `json:"distance"`
 	
 	// Enhanced intelligence
-	BusinessIntelligence      BusinessIntelligence      `json:"business_intelligence"`
-	RealTimeContext          RealTimeContext           `json:"real_time_context"`
-	AccessibilityIntelligence AccessibilityIntelligence `json:"accessibility_intelligence"`
-	UnifiedRecommendations   UnifiedRecommendations    `json:"unified_recommendations"`
+	BusinessIntelligence         BusinessIntelligence          `json:"business_intelligence"`
+	RealTimeContext              RealTimeContext               `json:"real_time_context"`
+	AccessibilityIntelligence    AccessibilityIntelligence     `json:"accessibility_intelligence"`
+	UnifiedRecommendations       UnifiedRecommendations        `json:"unified_recommendations"`
 	
 	// Metadata
 	ProcessingTime time.Duration `json:"processing_time_ms"`

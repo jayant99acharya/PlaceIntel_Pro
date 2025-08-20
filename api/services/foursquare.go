@@ -14,15 +14,16 @@ import (
 )
 
 const (
-	FoursquareAPIBase = "https://api.foursquare.com/v3"
+	FoursquareAPIBase = "https://places-api.foursquare.com"
+	APIVersion        = "2025-06-17"
 	DefaultRadius     = 1000
 	DefaultLimit      = 20
 )
 
 // FoursquareService handles interactions with Foursquare Places API
 type FoursquareService struct {
-	apiKey     string
-	httpClient *http.Client
+	apiKey        string
+	httpClient    *http.Client
 }
 
 // NewFoursquareService creates a new Foursquare service instance
@@ -42,8 +43,8 @@ type FoursquareSearchResponse struct {
 		GeoBounds struct {
 			Circle struct {
 				Center struct {
-					Latitude  float64 `json:"latitude"`
-					Longitude float64 `json:"longitude"`
+					Latitude    float64 `json:"latitude"`
+					Longitude   float64 `json:"longitude"`
 				} `json:"center"`
 				Radius int `json:"radius"`
 			} `json:"circle"`
@@ -53,7 +54,7 @@ type FoursquareSearchResponse struct {
 
 // FoursquarePlaceDetails represents detailed place information from Foursquare
 type FoursquarePlaceDetails struct {
-	FSQId    string `json:"fsq_id"`
+	FSQId    string `json:"fsq_place_id"`
 	Name     string `json:"name"`
 	Location struct {
 		Address     string  `json:"address"`
@@ -62,8 +63,8 @@ type FoursquarePlaceDetails struct {
 		Locality    string  `json:"locality"`
 		Postcode    string  `json:"postcode"`
 		Region      string  `json:"region"`
-		Latitude    float64 `json:"lat"`
-		Longitude   float64 `json:"lng"`
+		Latitude    float64 `json:"latitude"`
+		Longitude   float64 `json:"longitude"`
 	} `json:"location"`
 	Categories []struct {
 		Id   int    `json:"id"`
@@ -78,9 +79,9 @@ type FoursquarePlaceDetails struct {
 	Email       string `json:"email"`
 	Description string `json:"description"`
 	Hours       struct {
-		Display   string `json:"display"`
-		IsLocalHoliday bool `json:"is_local_holiday"`
-		OpenNow   bool   `json:"open_now"`
+		Display   		string  `json:"display"`
+		IsLocalHoliday  bool    `json:"is_local_holiday"`
+		OpenNow         bool    `json:"open_now"`
 		Regular   []struct {
 			Close string `json:"close"`
 			Day   int    `json:"day"`
@@ -122,10 +123,7 @@ func (fs *FoursquareService) SearchPlaces(req models.PlaceSearchRequest) ([]mode
 	}
 	params.Add("limit", strconv.Itoa(limit))
 	
-	// Add additional useful fields
-	params.Add("fields", "fsq_id,name,location,categories,distance,tel,website,rating,price,hours")
-
-	// Make API request
+	// Make API request (no fields parameter needed for new API)
 	apiURL := fmt.Sprintf("%s/places/search?%s", FoursquareAPIBase, params.Encode())
 	
 	logrus.WithFields(logrus.Fields{
@@ -152,9 +150,8 @@ func (fs *FoursquareService) SearchPlaces(req models.PlaceSearchRequest) ([]mode
 
 // GetPlaceDetails retrieves detailed information for a specific place
 func (fs *FoursquareService) GetPlaceDetails(placeID string) (*FoursquarePlaceDetails, error) {
-	// Build API URL with comprehensive fields
-	fields := "fsq_id,name,location,categories,tel,website,email,description,hours,rating,stats,price,photos"
-	apiURL := fmt.Sprintf("%s/places/%s?fields=%s", FoursquareAPIBase, placeID, fields)
+	// Build API URL (no fields parameter needed for new API)
+	apiURL := fmt.Sprintf("%s/places/%s", FoursquareAPIBase, placeID)
 
 	logrus.WithFields(logrus.Fields{
 		"place_id": placeID,
@@ -182,9 +179,10 @@ func (fs *FoursquareService) makeRequest(method, url string) ([]byte, error) {
 		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
 
-	// Add authentication header
-	req.Header.Set("Authorization", fs.apiKey)
+	// Add new authentication headers for updated API
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", fs.apiKey))
 	req.Header.Set("Accept", "application/json")
+	req.Header.Set("X-Places-Api-Version", APIVersion)
 
 	resp, err := fs.httpClient.Do(req)
 	if err != nil {

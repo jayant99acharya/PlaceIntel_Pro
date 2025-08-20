@@ -63,20 +63,21 @@ services:
       - placeintel-network
     restart: unless-stopped
 
-  # Nginx Reverse Proxy (for production)
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./docs:/usr/share/nginx/html/docs:ro
-    depends_on:
-      - api
-    networks:
-      - placeintel-network
-    restart: unless-stopped
+  # Nginx Reverse Proxy (optional - for production)
+  # Uncomment to enable nginx proxy with load balancing and security features
+  # nginx:
+  #   image: nginx:alpine
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./docs:/usr/share/nginx/html/docs:ro
+  #   depends_on:
+  #     - api
+  #   networks:
+  #     - placeintel-network
+  #   restart: unless-stopped
 
 volumes:
   redis_data:

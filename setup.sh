@@ -103,7 +103,7 @@ wait_for_services() {
     # Wait for API service
     echo "Checking API service..."
     for i in {1..30}; do
-        if curl -s http://localhost:8080/api/v1/health > /dev/null 2>&1; then
+        if curl -s http://localhost:8081/api/v1/health > /dev/null 2>&1; then
             echo -e "${GREEN}✅ API service is ready${NC}"
             break
         fi
@@ -139,7 +139,7 @@ test_api() {
     
     # Test health endpoint
     echo "Testing health endpoint..."
-    if curl -s http://localhost:8080/api/v1/health | grep -q "healthy"; then
+    if curl -s http://localhost:8081/api/v1/health | grep -q "healthy"; then
         echo -e "${GREEN}✅ Health check passed${NC}"
     else
         echo -e "${RED}❌ Health check failed${NC}"
@@ -148,7 +148,7 @@ test_api() {
     
     # Test search endpoint with sample data
     echo "Testing search endpoint..."
-    SEARCH_RESULT=$(curl -s "http://localhost:8080/api/v1/places/intelligence?lat=40.7128&lng=-74.0060&query=coffee&limit=1")
+    SEARCH_RESULT=$(curl -s "http://localhost:8081/api/v1/places/search?lat=40.7128&lng=-74.0060&query=coffee&limit=1")
     if echo "$SEARCH_RESULT" | grep -q "results"; then
         echo -e "${GREEN}✅ Search endpoint working${NC}"
     else
@@ -165,15 +165,15 @@ show_success() {
     echo -e "${GREEN}🎉 PlaceIntel Pro is now running successfully!${NC}"
     echo ""
     echo -e "${BLUE}🚀 Access your application:${NC}"
-    echo "• API Documentation: http://localhost:8080/docs"
+    echo "• API Documentation: http://localhost:8081/docs"
     echo "• Demo Application: Open examples/demo.html in your browser"
-    echo "• API Health Check: http://localhost:8080/api/v1/health"
+    echo "• API Health Check: http://localhost:8081/api/v1/health"
     echo "• Intelligence Service: http://localhost:5000/health"
     echo ""
     echo -e "${BLUE}📊 Sample API Endpoints:${NC}"
-    echo "• Search Places: GET http://localhost:8080/api/v1/places/intelligence?lat=40.7128&lng=-74.0060&query=coffee"
-    echo "• Place Details: GET http://localhost:8080/api/v1/places/{place_id}/details"
-    echo "• Popular Places: GET http://localhost:8080/api/v1/analytics/popular?lat=40.7128&lng=-74.0060"
+    echo "• Search Places: GET http://localhost:8081/api/v1/places/search?lat=40.7128&lng=-74.0060&query=coffee"
+    echo "• Place Details: GET http://localhost:8081/api/v1/places/{place_id}/details"
+    echo "• Popular Places: GET http://localhost:8081/api/v1/analytics/popular?lat=40.7128&lng=-74.0060"
     echo ""
     echo -e "${BLUE}🛠️  Development Commands:${NC}"
     echo "• View logs: docker-compose logs -f"
@@ -188,6 +188,26 @@ show_success() {
     echo "• Redis caching improves performance for repeated requests"
     echo ""
     echo -e "${GREEN}🏆 Ready to win the hackathon! Good luck!${NC}"
+    echo ""
+    echo -e "${BLUE}Opening demo in Chrome...${NC}"
+    
+    # Try to open in Chrome (different commands for different OS)
+    if command -v google-chrome &> /dev/null; then
+        google-chrome examples/demo.html
+    elif command -v google-chrome-stable &> /dev/null; then
+        google-chrome-stable examples/demo.html
+    elif command -v chromium-browser &> /dev/null; then
+        chromium-browser examples/demo.html
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS
+        if [ -d "/Applications/Google Chrome.app" ]; then
+            open -a "Google Chrome" examples/demo.html
+        else
+            echo -e "${YELLOW}Chrome not found. Please open examples/demo.html manually in Chrome${NC}"
+        fi
+    else
+        echo -e "${YELLOW}Chrome not found. Please open examples/demo.html manually in Chrome${NC}"
+    fi
 }
 
 # Main execution

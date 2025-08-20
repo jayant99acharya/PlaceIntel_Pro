@@ -293,7 +293,7 @@
                     <li><strong>Real-Time Context:</strong> Live crowd levels and optimal visit times</li>
                     <li><strong>Accessibility Intelligence:</strong> Inclusive information for people with disabilities</li>
                 </ul>
-                <p><strong>API Endpoint:</strong> <span class="api-endpoint">GET /api/v1/places/intelligence</span></p>
+                <p><strong>API Endpoint:</strong> <span class="api-endpoint">GET /api/v1/places/search</span></p>
             </div>
 
             <div class="search-form">
@@ -350,7 +350,7 @@
     </div>
 
     <script>
-        const API_BASE = 'http://localhost:8080/api/v1';
+        const API_BASE = 'http://localhost:8081/api/v1';
         
         document.getElementById('searchForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -382,7 +382,7 @@
                     params.append('query', query.trim());
                 }
                 
-                const response = await fetch(`${API_BASE}/places/intelligence?${params}`);
+                const response = await fetch(`${API_BASE}/places/search?${params}`);
                 
                 if (!response.ok) {
                     throw new Error(`API Error: ${response.status} ${response.statusText}`);
@@ -393,7 +393,7 @@
                 
             } catch (error) {
                 console.error('Search error:', error);
-                showError(`Search failed: ${error.message}. Make sure the API server is running on localhost:8080`);
+                showError(`Search failed: ${error.message}. Make sure the API server is running on localhost:8081`);
             } finally {
                 showLoading(false);
             }

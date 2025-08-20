@@ -37,12 +37,12 @@ type IntelligenceRequest struct {
 
 // IntelligenceResponse represents the response from Python intelligence service
 type IntelligenceResponse struct {
-	BusinessIntelligence      models.BusinessIntelligence      `json:"business_intelligence"`
-	RealTimeContext          models.RealTimeContext           `json:"real_time_context"`
-	AccessibilityIntelligence models.AccessibilityIntelligence `json:"accessibility_intelligence"`
-	UnifiedRecommendations   models.UnifiedRecommendations    `json:"unified_recommendations"`
-	ProcessingTime           float64                          `json:"processing_time_ms"`
-	DataSources              []string                         `json:"data_sources"`
+	BusinessIntelligence       models.BusinessIntelligence       `json:"business_intelligence"`
+	RealTimeContext            models.RealTimeContext            `json:"real_time_context"`
+	AccessibilityIntelligence  models.AccessibilityIntelligence  `json:"accessibility_intelligence"`
+	UnifiedRecommendations     models.UnifiedRecommendations     `json:"unified_recommendations"`
+	ProcessingTime             float64                           `json:"processing_time_ms"`
+	DataSources                []string                          `json:"data_sources"`
 }
 
 // EnhancePlaceWithIntelligence enriches place data with AI-generated intelligence
@@ -77,16 +77,16 @@ func (is *IntelligenceService) EnhancePlaceWithIntelligence(place models.Foursqu
 
 	// Create enhanced place intelligence
 	placeIntel := &models.PlaceIntelligence{
-		FSQId:      place.FSQId,
+		FSQId:      place.FSQPlaceId,
 		Name:       place.Name,
 		Location:   place.Location,
 		Categories: place.Categories,
 		Distance:   place.Distance,
 
 		BusinessIntelligence:      intelligenceResp.BusinessIntelligence,
-		RealTimeContext:          intelligenceResp.RealTimeContext,
+		RealTimeContext:           intelligenceResp.RealTimeContext,
 		AccessibilityIntelligence: intelligenceResp.AccessibilityIntelligence,
-		UnifiedRecommendations:   intelligenceResp.UnifiedRecommendations,
+		UnifiedRecommendations:    intelligenceResp.UnifiedRecommendations,
 
 		ProcessingTime: time.Since(startTime),
 		DataSources:    intelligenceResp.DataSources,
@@ -94,7 +94,7 @@ func (is *IntelligenceService) EnhancePlaceWithIntelligence(place models.Foursqu
 	}
 
 	logrus.WithFields(logrus.Fields{
-		"place_id":        place.FSQId,
+		"place_id":        place.FSQPlaceId,
 		"place_name":      place.Name,
 		"processing_time": time.Since(startTime),
 	}).Info("Place intelligence enhancement completed")
@@ -208,13 +208,13 @@ func (is *IntelligenceService) createBasicPlaceIntelligence(place models.Foursqu
 
 	realTimeContext := models.RealTimeContext{
 		CurrentStatus:     "unknown",
-		CrowdLevel:       "unknown",
-		BestVisitTimes:   []string{},
-		LiveEvents:       []string{},
+		CrowdLevel:        "unknown",
+		BestVisitTimes:    []string{},
+		LiveEvents:        []string{},
 		EstimatedWaitTime: "unknown",
-		WeatherImpact:    "none",
-		LastUpdated:      time.Now().UTC(),
-		ConfidenceScore:  0.0,
+		WeatherImpact:     "none",
+		LastUpdated:       time.Now().UTC(),
+		ConfidenceScore:   0.0,
 	}
 
 	accessibilityIntel := models.AccessibilityIntelligence{
@@ -249,7 +249,7 @@ func (is *IntelligenceService) createBasicPlaceIntelligence(place models.Foursqu
 	}
 
 	return &models.PlaceIntelligence{
-		FSQId:      place.FSQId,
+		FSQId:      place.FSQPlaceId,
 		Name:       place.Name,
 		Location:   place.Location,
 		Categories: place.Categories,
