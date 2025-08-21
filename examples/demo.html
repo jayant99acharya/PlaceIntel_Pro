@@ -3,8 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlaceIntel Pro - Demo</title>
+    <title>PlaceIntel Pro - Next Generation Location Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        :root {
+            --primary: #00d4ff;
+            --primary-light: #33ddff;
+            --primary-dark: #0099cc;
+            --secondary: #0066ff;
+            --accent: #ff6b35;
+            --success: #00ff88;
+            --warning: #ffaa00;
+            --error: #ff4444;
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #1a1a2e;
+            --bg-surface: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8c5d6;
+            --text-muted: #8892b0;
+            --border-primary: rgba(0, 212, 255, 0.3);
+            --border-secondary: rgba(0, 102, 255, 0.2);
+            --glow-primary: rgba(0, 212, 255, 0.4);
+            --glow-secondary: rgba(0, 102, 255, 0.3);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,99 +35,335 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, #0f1729 100%);
             min-height: 100vh;
-            padding: 20px;
+            height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Animated background particles */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+            box-shadow: 0 0 10px var(--glow-primary);
+        }
+
+        .particle:nth-child(2n) {
+            background: var(--secondary);
+            box-shadow: 0 0 8px var(--glow-secondary);
+            animation-delay: -2s;
+            animation-duration: 8s;
+        }
+
+        .particle:nth-child(3n) {
+            background: var(--accent);
+            box-shadow: 0 0 6px rgba(255, 107, 53, 0.6);
+            animation-delay: -4s;
+            animation-duration: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            50% { transform: translateY(-100vh) rotate(180deg); }
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
+            max-width: 100%;
+            width: 100vw;
+            margin: 0;
+            padding: 1rem;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
         }
 
+        /* Glassmorphism header */
         .header {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-            padding: 30px;
+            background: rgba(22, 33, 62, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-primary);
+            border-radius: 2rem;
+            padding: 3rem 2rem;
             text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 60px var(--glow-primary);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--glow-primary) 0%, var(--glow-secondary) 100%);
+            opacity: 0.1;
+            z-index: -1;
         }
 
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary) 50%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            position: relative;
+            text-shadow: 0 0 30px var(--glow-primary);
+        }
+
+        .header h1 i {
+            color: var(--primary);
+            margin-right: 1rem;
+            filter: drop-shadow(0 0 20px var(--glow-primary));
         }
 
         .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 400;
+            line-height: 1.6;
         }
 
-        .demo-section {
-            padding: 30px;
+        /* Premium search form */
+        .search-section {
+            background: rgba(22, 33, 62, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-primary);
+            border-radius: 2rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 0 40px var(--glow-primary);
+        }
+
+        .search-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--glow-primary) 0%, var(--glow-secondary) 100%);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .api-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .api-feature {
+            background: rgba(22, 33, 62, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-secondary);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .api-feature:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 40px var(--glow-primary);
+        }
+
+        .api-feature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .api-feature:hover::before {
+            opacity: 1;
+        }
+
+        .api-feature i {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px var(--glow-primary));
+        }
+
+        .api-feature h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .api-feature p {
+            color: var(--text-secondary);
+            line-height: 1.6;
         }
 
         .search-form {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .search-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .search-title h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            align-items: end;
+        }
+
+        .form-grid:last-of-type {
+            grid-template-columns: 1fr 1fr;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            position: relative;
         }
 
-        .form-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-            margin-bottom: 0;
-        }
-
-        label {
+        .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 0.75rem;
             font-weight: 600;
-            color: #333;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-group label i {
+            margin-right: 0.5rem;
+            color: #8b5cf6;
+        }
+
+        .input-wrapper {
+            position: relative;
         }
 
         input, select {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
+            padding: 1rem 1.25rem;
+            background: rgba(22, 33, 62, 0.6);
+            border: 1px solid var(--border-secondary);
+            border-radius: 1rem;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
         }
 
         input:focus, select:focus {
             outline: none;
-            border-color: #4facfe;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--glow-primary), 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+            background: rgba(22, 33, 62, 0.8);
+        }
+
+        input::placeholder {
+            color: var(--text-muted);
+        }
+
+        select option {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
         }
 
         .search-btn {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
+            width: 100%;
+            padding: 1.25rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
             border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 1rem;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 30px var(--glow-primary);
+        }
+
+        .search-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
         }
 
         .search-btn:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 50px var(--glow-primary);
+        }
+
+        .search-btn:hover::before {
+            left: 100%;
         }
 
         .search-btn:disabled {
@@ -113,245 +372,633 @@
             transform: none;
         }
 
+        /* Premium loading animation */
         .loading {
             text-align: center;
-            padding: 40px;
-            color: #666;
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2rem;
+            margin: 2rem 0;
         }
 
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #4facfe;
+        .loading-animation {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+        }
+
+        .pulse-ring {
+            width: 100px;
+            height: 100px;
+            border: 3px solid rgba(139, 92, 246, 0.3);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            position: absolute;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .pulse-ring:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .pulse-ring:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2.4);
+                opacity: 0;
+            }
+        }
+
+        .loading-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
+        /* Premium results section */
         .results {
-            margin-top: 30px;
+            margin-top: 2rem;
+        }
+
+        .results-header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .results-meta {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .meta-item i {
+            color: #8b5cf6;
         }
 
         .place-card {
-            background: white;
-            border: 1px solid #e9ecef;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: transform 0.2s, box-shadow 0.2s;
+            background: rgba(22, 33, 62, 0.5);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-secondary);
+            border-radius: 2rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .place-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent), var(--success));
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .place-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 0 0 50px var(--glow-primary);
+        }
+
+        .place-card:hover::before {
+            opacity: 1;
+        }
+
+        .place-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .place-category {
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .place-category i {
+            color: var(--primary);
+        }
+
+        .place-distance {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 25px var(--glow-primary);
         }
 
         .place-header {
             display: flex;
-            justify-content: between;
-            align-items: start;
-            margin-bottom: 15px;
-        }
-
-        .place-name {
-            font-size: 1.4em;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .place-category {
-            color: #666;
-            font-size: 0.9em;
-        }
-
-        .place-distance {
-            color: #4facfe;
-            font-weight: 600;
-            font-size: 0.9em;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-secondary);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .intelligence-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
 
         .intelligence-section {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
+            background: rgba(22, 33, 62, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-secondary);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .intelligence-section:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 0 30px var(--glow-primary);
         }
 
         .intelligence-title {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-secondary);
+        }
+
+        .intelligence-title h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .intelligence-title i {
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 10px var(--glow-primary));
         }
 
         .score-badge {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .accessibility-badge {
-            background: #28a745;
+        .score-badge.high {
+            background: linear-gradient(135deg, #10b981, #06b6d4);
             color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            font-weight: 600;
         }
 
-        .accessibility-badge.limited {
-            background: #ffc107;
-            color: #333;
+        .score-badge.medium {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            color: white;
+        }
+
+        .score-badge.low {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
         }
 
         .feature-list {
             list-style: none;
+            margin: 0;
             padding: 0;
         }
 
         .feature-list li {
-            padding: 5px 0;
-            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .feature-list li:before {
-            content: "✓ ";
-            color: #28a745;
-            font-weight: bold;
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-list li:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .feature-list li i {
+            color: #10b981;
+            font-size: 1rem;
+            min-width: 20px;
         }
 
         .insights-list {
             list-style: none;
-            padding: 0;
         }
 
         .insights-list li {
-            background: white;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 6px;
-            border-left: 4px solid #4facfe;
+            background: rgba(22, 33, 62, 0.4);
+            border: 1px solid var(--border-secondary);
+            border-left: 3px solid var(--primary);
+            padding: 1rem 1.25rem;
+            margin: 0.75rem 0;
+            border-radius: 0.75rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .insights-list li:hover {
+            background: rgba(22, 33, 62, 0.6);
+            border-left-color: var(--secondary);
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 20px var(--glow-primary);
         }
 
         .error {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
+            background: rgba(26, 26, 46, 0.8);
+            border: 1px solid var(--error);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            color: #ff8a8a;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 10px 25px rgba(255, 68, 68, 0.2);
         }
 
-        .api-info {
-            background: #e7f3ff;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 4px solid #4facfe;
+        .error i {
+            color: #ef4444;
+            font-size: 1.25rem;
         }
 
-        .api-endpoint {
-            font-family: 'Courier New', monospace;
-            background: #f1f3f4;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.9em;
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0.5rem;
+            }
+
+            .header {
+                padding: 2rem 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .search-section {
+                padding: 1.5rem 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .form-grid:last-of-type {
+                grid-template-columns: 1fr;
+            }
+
+            .intelligence-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .results-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 1rem;
+            }
+
+            .results-meta {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .place-card {
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .place-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+
+            .place-distance {
+                align-self: flex-start;
+            }
+
+            .api-showcase {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .api-feature {
+                padding: 1rem;
+            }
+
+            .intelligence-section {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+
+            .form-grid:last-of-type {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.75rem;
+            }
+
+            .header p {
+                font-size: 0.9rem;
+            }
+
+            .place-name {
+                font-size: 1.25rem;
+            }
+
+            .results-title {
+                font-size: 1.25rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-btn {
+                font-size: 1rem;
+                padding: 1rem 1.5rem;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
+    <!-- Animated background particles -->
+    <div class="bg-particles" id="particles"></div>
+
     <div class="container">
-        <div class="header">
-            <h1>🏆 PlaceIntel Pro</h1>
-            <p>Universal Location Intelligence Platform - Hackathon Demo</p>
+        <!-- Premium Header -->
+        <div class="header fade-in">
+            <h1><i class="fas fa-location-dot"></i>PlaceIntel Pro</h1>
+            <p>Next-Generation Location Intelligence Platform with Advanced AI-Powered Insights</p>
         </div>
 
-        <div class="demo-section">
-            <div class="api-info">
-                <h3>🚀 Hackathon Demo - Foursquare Places API Challenge</h3>
-                <p>This demo showcases PlaceIntel Pro's three-pillar intelligence system:</p>
-                <ul style="margin: 10px 0; padding-left: 20px;">
-                    <li><strong>Business Intelligence:</strong> AI-powered popularity scoring and sentiment analysis</li>
-                    <li><strong>Real-Time Context:</strong> Live crowd levels and optimal visit times</li>
-                    <li><strong>Accessibility Intelligence:</strong> Inclusive information for people with disabilities</li>
-                </ul>
-                <p><strong>API Endpoint:</strong> <span class="api-endpoint">GET /api/v1/places/search</span></p>
+        <!-- Search Section -->
+        <div class="search-section fade-in">
+            <!-- API Showcase -->
+            <div class="api-showcase">
+                <div class="api-feature">
+                    <i class="fas fa-brain"></i>
+                    <h3>Business Intelligence</h3>
+                    <p>AI-powered popularity scoring, sentiment analysis, and predictive insights for optimal business decisions</p>
+                </div>
+                <div class="api-feature">
+                    <i class="fas fa-satellite-dish"></i>
+                    <h3>Real-Time Context</h3>
+                    <p>Live crowd levels, wait times, and dynamic recommendations based on current conditions</p>
+                </div>
+                <div class="api-feature">
+                    <i class="fas fa-universal-access"></i>
+                    <h3>Accessibility Intelligence</h3>
+                    <p>Comprehensive accessibility scoring and detailed feature analysis for inclusive experiences</p>
+                </div>
             </div>
 
+            <!-- Search Form -->
             <div class="search-form">
-                <h3>🔍 Search Places with Intelligence</h3>
+                <div class="search-title">
+                    <h2><i class="fas fa-magnifying-glass"></i> Intelligent Place Discovery</h2>
+                </div>
+
                 <form id="searchForm">
-                    <div class="form-row">
+                    <div class="form-grid">
                         <div class="form-group">
-                            <label for="query">Search Query</label>
-                            <input type="text" id="query" placeholder="e.g., coffee, restaurant, gym" value="coffee">
+                            <label for="query">
+                                <i class="fas fa-search"></i> Search Query
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="text" id="query" 
+                                    placeholder="coffee, restaurant, gym, spa..." 
+                                    value="coffee">
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="latitude">Latitude</label>
-                            <input type="number" id="latitude" step="any" placeholder="40.7128" value="40.7128" required>
+                            <label for="latitude">
+                                <i class="fas fa-globe"></i> Latitude
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="latitude" 
+                                    step="any" 
+                                    placeholder="40.7128" 
+                                    value="40.7128" 
+                                    required>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="longitude">Longitude</label>
-                            <input type="number" id="longitude" step="any" placeholder="-74.0060" value="-74.0060" required>
+                            <label for="longitude">
+                                <i class="fas fa-globe"></i> Longitude
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="longitude" 
+                                    step="any" 
+                                    placeholder="-74.0060" 
+                                    value="-74.0060" 
+                                    required>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-row">
+                    <div class="form-grid">
                         <div class="form-group">
-                            <label for="radius">Radius (meters)</label>
-                            <select id="radius">
-                                <option value="500">500m</option>
-                                <option value="1000" selected>1km</option>
-                                <option value="2000">2km</option>
-                                <option value="5000">5km</option>
-                            </select>
+                            <label for="radius">
+                                <i class="fas fa-circle-dot"></i> Search Radius
+                            </label>
+                            <div class="input-wrapper">
+                                <select id="radius">
+                                    <option value="500">500 meters</option>
+                                    <option value="1000" selected>1 kilometer</option>
+                                    <option value="2000">2 kilometers</option>
+                                    <option value="5000">5 kilometers</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="limit">Results Limit</label>
-                            <select id="limit">
-                                <option value="5">5 results</option>
-                                <option value="10" selected>10 results</option>
-                                <option value="20">20 results</option>
-                            </select>
+                            <label for="limit">
+                                <i class="fas fa-list-ol"></i> Results Limit
+                            </label>
+                            <div class="input-wrapper">
+                                <select id="limit">
+                                    <option value="5">5 results</option>
+                                    <option value="10" selected>10 results</option>
+                                    <option value="20">20 results</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <button type="submit" class="search-btn" id="searchBtn">
-                        🔍 Search with Intelligence
+                        <i class="fas fa-rocket"></i>
+                        Discover Places
                     </button>
                 </form>
             </div>
-
-            <div id="loading" class="loading" style="display: none;">
-                <div class="spinner"></div>
-                <p>Processing location intelligence...</p>
-            </div>
-
-            <div id="error" class="error" style="display: none;"></div>
-
-            <div id="results" class="results"></div>
         </div>
+
+        <!-- Loading Animation -->
+        <div id="loading" class="loading" style="display: none;">
+            <div class="loading-animation">
+                <div class="pulse-ring"></div>
+                <div class="pulse-ring"></div>
+                <div class="pulse-ring"></div>
+                <div class="loading-core"></div>
+            </div>
+            <h3><i class="fas fa-microchip"></i> Processing Location Intelligence</h3>
+            <p style="color: rgba(255, 255, 255, 0.7); margin-top: 0.5rem;">
+                Analyzing places using our advanced three-pillar AI system
+            </p>
+        </div>
+
+        <!-- Error Display -->
+        <div id="error" class="error" style="display: none;"></div>
+
+        <!-- Results Section -->
+        <div id="results" class="results"></div>
     </div>
 
     <script>
         const API_BASE = 'http://localhost:8081/api/v1';
         
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Intersection Observer for scroll animations
+        function initScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Search form handler
         document.getElementById('searchForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -362,7 +1009,7 @@
             const limit = parseInt(document.getElementById('limit').value);
             
             if (!lat || !lng) {
-                showError('Please enter valid latitude and longitude');
+                showError('Please enter valid latitude and longitude coordinates');
                 return;
             }
             
@@ -393,21 +1040,35 @@
                 
             } catch (error) {
                 console.error('Search error:', error);
-                showError(`Search failed: ${error.message}. Make sure the API server is running on localhost:8081`);
+                showError(`Search failed: ${error.message}. Please ensure the API server is running on localhost:8081`);
             } finally {
                 showLoading(false);
             }
         });
         
         function showLoading(show) {
-            document.getElementById('loading').style.display = show ? 'block' : 'none';
-            document.getElementById('searchBtn').disabled = show;
+            const loadingEl = document.getElementById('loading');
+            const searchBtn = document.getElementById('searchBtn');
+            
+            if (show) {
+                loadingEl.style.display = 'block';
+                loadingEl.classList.add('fade-in', 'visible');
+                searchBtn.disabled = true;
+                searchBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing Places...';
+                searchBtn.style.background = 'linear-gradient(135deg, #4a5568, #718096)';
+            } else {
+                loadingEl.style.display = 'none';
+                searchBtn.disabled = false;
+                searchBtn.innerHTML = '<i class="fas fa-rocket"></i> Discover Places';
+                searchBtn.style.background = 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%)';
+            }
         }
         
         function showError(message) {
             const errorDiv = document.getElementById('error');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i>${message}`;
+            errorDiv.style.display = 'flex';
+            errorDiv.classList.add('fade-in', 'visible');
         }
         
         function hideError() {
@@ -422,108 +1083,258 @@
             const resultsDiv = document.getElementById('results');
             
             if (!data.results || data.results.length === 0) {
-                resultsDiv.innerHTML = '<p>No places found. Try adjusting your search parameters.</p>';
+                resultsDiv.innerHTML = `
+                    <div class="error">
+                        <i class="fas fa-search-minus"></i>
+                        <div>
+                            <strong>No places found</strong><br>
+                            Try adjusting your search parameters or expanding the search radius.
+                        </div>
+                    </div>`;
                 return;
             }
             
             const resultsHTML = `
-                <h3>🎯 Search Results (${data.results.length} places found)</h3>
-                <p><strong>Processing Time:</strong> ${data.meta.processing_time_ms}ms | <strong>Data Sources:</strong> ${data.meta.data_sources.join(', ')}</p>
-                ${data.results.map(place => createPlaceCard(place)).join('')}
+                <div class="results-header fade-in">
+                    <div class="results-title">
+                        <i class="fas fa-map-marked-alt"></i> 
+                        ${data.results.length} Premium Location${data.results.length !== 1 ? 's' : ''} Discovered
+                    </div>
+                    <div class="results-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-stopwatch"></i>
+                            ${data.meta.processing_time_ms}ms
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-database"></i>
+                            ${data.meta.data_sources.join(' • ')}
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-shield-check"></i>
+                            AI Verified
+                        </div>
+                    </div>
+                </div>
+                ${data.results.map((place, index) => createPlaceCard(place, index)).join('')}
             `;
             
             resultsDiv.innerHTML = resultsHTML;
+            
+            // Animate cards in sequence
+            setTimeout(() => {
+                document.querySelectorAll('.place-card').forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.add('visible');
+                    }, index * 150);
+                });
+            }, 100);
         }
         
-        function createPlaceCard(place) {
+        function createPlaceCard(place, index) {
             const business = place.business_intelligence;
             const realtime = place.real_time_context;
             const accessibility = place.accessibility_intelligence;
             const recommendations = place.unified_recommendations;
             
+            const getScoreBadgeClass = (score) => {
+                if (score >= 8) return 'high';
+                if (score >= 6) return 'medium';
+                return 'low';
+            };
+
+            const getCrowdBadgeClass = (level) => {
+                const levelLower = level.toLowerCase();
+                if (levelLower === 'low') return 'high';
+                if (levelLower === 'moderate' || levelLower === 'medium') return 'medium';
+                return 'low';
+            };
+            
             return `
-                <div class="place-card">
+                <div class="place-card fade-in" style="animation-delay: ${index * 0.1}s">
                     <div class="place-header">
                         <div>
                             <div class="place-name">${place.name}</div>
                             <div class="place-category">
-                                ${place.categories && place.categories.length > 0 ? place.categories[0].name : 'General'}
+                                <i class="fas fa-tag"></i>
+                                ${place.categories && place.categories.length > 0 ? place.categories[0].name : 'General Location'}
                             </div>
                         </div>
-                        <div class="place-distance">${place.distance}m away</div>
+                        <div class="place-distance">
+                            <i class="fas fa-location-arrow"></i>
+                            ${place.distance}m away
+                        </div>
                     </div>
                     
                     <div class="intelligence-grid">
                         <div class="intelligence-section">
                             <div class="intelligence-title">
-                                📊 Business Intelligence
-                                <span class="score-badge">${business.popularity_score}/10</span>
-                            </div>
-                            <ul class="feature-list">
-                                <li>Popularity Score: ${business.popularity_score}/10</li>
-                                <li>Sentiment Score: ${business.sentiment_score}/5</li>
-                                <li>Atmosphere: ${business.atmosphere}</li>
-                                <li>Price Range: ${business.price_range}</li>
-                                ${business.specialties.length > 0 ? `<li>Specialties: ${business.specialties.join(', ')}</li>` : ''}
-                                ${business.ideal_for.length > 0 ? `<li>Ideal for: ${business.ideal_for.join(', ')}</li>` : ''}
-                            </ul>
-                        </div>
-                        
-                        <div class="intelligence-section">
-                            <div class="intelligence-title">
-                                ⏰ Real-Time Context
-                                <span class="score-badge">${realtime.crowd_level}</span>
-                            </div>
-                            <ul class="feature-list">
-                                <li>Status: ${realtime.current_status}</li>
-                                <li>Crowd Level: ${realtime.crowd_level}</li>
-                                <li>Wait Time: ${realtime.estimated_wait_time}</li>
-                                ${realtime.best_visit_times.length > 0 ? `<li>Best Times: ${realtime.best_visit_times.join(', ')}</li>` : ''}
-                                ${realtime.live_events.length > 0 ? `<li>Live Events: ${realtime.live_events.join(', ')}</li>` : ''}
-                                <li>Confidence: ${Math.round(realtime.confidence_score * 100)}%</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="intelligence-section">
-                            <div class="intelligence-title">
-                                ♿ Accessibility Intelligence
-                                <span class="accessibility-badge ${accessibility.wheelchair_accessible ? '' : 'limited'}">
-                                    ${accessibility.wheelchair_accessible ? 'Accessible' : 'Limited'}
+                                <h4>
+                                    <i class="fas fa-chart-line"></i>
+                                    Business Intelligence
+                                </h4>
+                                <span class="score-badge ${getScoreBadgeClass(business.popularity_score)}">
+                                    <i class="fas fa-star"></i>
+                                    ${business.popularity_score}/10
                                 </span>
                             </div>
                             <ul class="feature-list">
-                                <li>Accessibility Score: ${accessibility.accessibility_score}/10</li>
-                                <li>Wheelchair Access: ${accessibility.wheelchair_accessible ? 'Yes' : 'Limited'}</li>
-                                ${accessibility.features.ramp_access ? '<li>Ramp Access Available</li>' : ''}
-                                ${accessibility.features.elevator ? '<li>Elevator Available</li>' : ''}
-                                ${accessibility.features.accessible_restrooms ? '<li>Accessible Restrooms</li>' : ''}
-                                ${accessibility.features.hearing_loop ? '<li>Hearing Loop System</li>' : ''}
-                                ${accessibility.features.braille_signage ? '<li>Braille Signage</li>' : ''}
+                                <li>
+                                    <i class="fas fa-fire"></i>
+                                    <strong>Popularity Score:</strong> ${business.popularity_score}/10
+                                </li>
+                                <li>
+                                    <i class="fas fa-heart"></i>
+                                    <strong>Customer Sentiment:</strong> ${business.sentiment_score}/5 ⭐
+                                </li>
+                                <li>
+                                    <i class="fas fa-palette"></i>
+                                    <strong>Atmosphere:</strong> ${business.atmosphere}
+                                </li>
+                                <li>
+                                    <i class="fas fa-wallet"></i>
+                                    <strong>Price Range:</strong> ${business.price_range}
+                                </li>
+                                ${business.specialties.length > 0 ? `
+                                    <li>
+                                        <i class="fas fa-crown"></i>
+                                        <strong>Specialties:</strong> ${business.specialties.join(', ')}
+                                    </li>
+                                ` : ''}
+                                ${business.ideal_for.length > 0 ? `
+                                    <li>
+                                        <i class="fas fa-users"></i>
+                                        <strong>Perfect For:</strong> ${business.ideal_for.join(', ')}
+                                    </li>
+                                ` : ''}
                             </ul>
                         </div>
                         
                         <div class="intelligence-section">
                             <div class="intelligence-title">
-                                💡 AI Recommendations
-                                <span class="score-badge">${Math.round(recommendations.confidence_score * 100)}%</span>
+                                <h4>
+                                    <i class="fas fa-satellite-dish"></i>
+                                    Real-Time Context
+                                </h4>
+                                <span class="score-badge ${getCrowdBadgeClass(realtime.crowd_level)}">
+                                    <i class="fas fa-users"></i>
+                                    ${realtime.crowd_level}
+                                </span>
+                            </div>
+                            <ul class="feature-list">
+                                <li>
+                                    <i class="fas ${realtime.current_status.toLowerCase() === 'open' ? 'fa-door-open' : 'fa-door-closed'}"></i>
+                                    <strong>Status:</strong> ${realtime.current_status}
+                                </li>
+                                <li>
+                                    <i class="fas fa-user-group"></i>
+                                    <strong>Crowd Level:</strong> ${realtime.crowd_level}
+                                </li>
+                                <li>
+                                    <i class="fas fa-clock"></i>
+                                    <strong>Wait Time:</strong> ${realtime.estimated_wait_time}
+                                </li>
+                                ${realtime.best_visit_times.length > 0 ? `
+                                    <li>
+                                        <i class="fas fa-calendar-check"></i>
+                                        <strong>Best Times:</strong> ${realtime.best_visit_times.join(', ')}
+                                    </li>
+                                ` : ''}
+                                ${realtime.live_events.length > 0 ? `
+                                    <li>
+                                        <i class="fas fa-calendar-star"></i>
+                                        <strong>Live Events:</strong> ${realtime.live_events.join(', ')}
+                                    </li>
+                                ` : ''}
+                                <li>
+                                    <i class="fas fa-shield-check"></i>
+                                    <strong>Data Confidence:</strong> ${Math.round(realtime.confidence_score * 100)}%
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="intelligence-section">
+                            <div class="intelligence-title">
+                                <h4>
+                                    <i class="fas fa-universal-access"></i>
+                                    Accessibility Intelligence
+                                </h4>
+                                <span class="score-badge ${accessibility.wheelchair_accessible ? 'high' : 'medium'}">
+                                    <i class="fas fa-wheelchair"></i>
+                                    ${accessibility.accessibility_score}/10
+                                </span>
+                            </div>
+                            <ul class="feature-list">
+                                <li>
+                                    <i class="fas fa-star"></i>
+                                    <strong>Accessibility Score:</strong> ${accessibility.accessibility_score}/10
+                                </li>
+                                <li>
+                                    <i class="fas fa-wheelchair"></i>
+                                    <strong>Wheelchair Access:</strong> ${accessibility.wheelchair_accessible ? 'Fully Accessible' : 'Limited Access'}
+                                </li>
+                                ${accessibility.features.ramp_access ? 
+                                    '<li><i class="fas fa-angle-up"></i> <strong>Ramp Access Available</strong></li>' : ''}
+                                ${accessibility.features.elevator ? 
+                                    '<li><i class="fas fa-elevator"></i> <strong>Elevator Available</strong></li>' : ''}
+                                ${accessibility.features.accessible_restrooms ? 
+                                    '<li><i class="fas fa-restroom"></i> <strong>Accessible Restrooms</strong></li>' : ''}
+                                ${accessibility.features.hearing_loop ? 
+                                    '<li><i class="fas fa-ear-listen"></i> <strong>Hearing Loop System</strong></li>' : ''}
+                                ${accessibility.features.braille_signage ? 
+                                    '<li><i class="fas fa-braille"></i> <strong>Braille Signage</strong></li>' : ''}
+                            </ul>
+                        </div>
+                        
+                        <div class="intelligence-section">
+                            <div class="intelligence-title">
+                                <h4>
+                                    <i class="fas fa-robot"></i>
+                                    AI-Powered Insights
+                                </h4>
+                                <span class="score-badge ${getScoreBadgeClass(recommendations.confidence_score * 10)}">
+                                    <i class="fas fa-brain"></i>
+                                    ${Math.round(recommendations.confidence_score * 100)}%
+                                </span>
                             </div>
                             ${recommendations.personalized_insights.length > 0 ? `
                                 <ul class="insights-list">
-                                    ${recommendations.personalized_insights.map(insight => `<li>${insight}</li>`).join('')}
+                                    ${recommendations.personalized_insights.map(insight => 
+                                        `<li><i class="fas fa-lightbulb"></i> ${insight}</li>`).join('')}
                                 </ul>
                             ` : ''}
                             ${recommendations.optimal_visit_strategy ? `
-                                <p><strong>Visit Strategy:</strong> ${recommendations.optimal_visit_strategy}</p>
+                                <div style="background: rgba(0, 212, 255, 0.1); border: 1px solid var(--border-primary); border-radius: 1rem; padding: 1.5rem; margin-top: 1rem; box-shadow: 0 5px 15px var(--glow-primary);">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                        <i class="fas fa-bullseye" style="color: var(--primary); font-size: 1.25rem; filter: drop-shadow(0 0 10px var(--glow-primary));"></i>
+                                        <strong style="color: var(--text-primary);">Optimal Visit Strategy</strong>
+                                    </div>
+                                    <p style="color: var(--text-secondary); line-height: 1.5;">${recommendations.optimal_visit_strategy}</p>
+                                </div>
                             ` : ''}
                         </div>
                     </div>
                 </div>
             `;
         }
-        
-        // Auto-search on page load for demo purposes
+
+        // Initialize everything when page loads
         window.addEventListener('load', () => {
-            document.getElementById('searchForm').dispatchEvent(new Event('submit'));
+            createParticles();
+            initScrollAnimations();
+            
+            // Auto-search for demo
+            setTimeout(() => {
+                document.getElementById('searchForm').dispatchEvent(new Event('submit'));
+            }, 1000);
+        });
+
+        // Add some interactive effects
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            document.documentElement.style.setProperty('--mouse-x', mouseX);
+            document.documentElement.style.setProperty('--mouse-y', mouseY);
         });
     </script>
 </body>
