@@ -57,7 +57,7 @@ setup_environment() {
     echo -e "${BLUE}Setting up environment...${NC}"
     
     if [ ! -f .env ]; then
-        cp .env.example .env
+        cp .env .env
         echo -e "${YELLOW}⚠️  Created .env file from template${NC}"
         echo -e "${YELLOW}⚠️  Please edit .env and add your Foursquare API key${NC}"
         echo ""

@@ -56,7 +56,7 @@ REM Setup environment file
 echo Setting up environment...
 
 if not exist .env (
-    copy .env.example .env >nul
+    copy .env .env >nul
     echo Created .env file from template
     echo Please edit .env and add your Foursquare API key
     echo.

@@ -135,7 +135,7 @@ The setup script will:
 #### Linux/macOS:
 ```bash
 # 1. Configure environment
-cp .env.example .env
+cp .env .env
 # Edit .env and add your FOURSQUARE_API_KEY
 
 # 2. Start services
@@ -148,7 +148,7 @@ curl http://localhost:8081/api/v1/health
 #### Windows:
 ```cmd
 # 1. Configure environment
-copy .env.example .env
+copy .env .env
 # Edit .env and add your FOURSQUARE_API_KEY
 
 # 2. Start services
